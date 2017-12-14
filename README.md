@@ -1,6 +1,13 @@
 # AdventOfCode2017
+
 Solutions for [Advent Of Code 2017](http://adventofcode.com/2017) written in C
 
-The descriptions of the tasks are in the comments in the `*.c` files.
+Task _7_, _11_ and _14_ are not completed yet.
 
-The `*.txt` files contain the original input for the tasks.
+The descriptions of the tasks are in the comments in the `*.c` files (see `src/`).
+
+The `*.txt` files in `input/` contain the original input for the tasks.
+
+`main.exe` does all tasks and prints all solutions.
+
+Use GCC to build `main.c` with the makefile provided.

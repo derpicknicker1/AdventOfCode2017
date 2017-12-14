@@ -1,93 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-int row[256], rowLen;
-
-void solveA() {
-	int length[] = {31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33};
-	int skip = 0, pos = 0;
-	int lenLen = sizeof(length)/sizeof(int);
-	
-	for(int i = 0; i < lenLen; i++) {
-
-		for( int j = length[i], k = 0; j > 1; j-=2, k++) {
-			int begin = pos+k;
-			int end = pos+length[i]-k-1;
-			if(begin >= rowLen) 
-				begin = begin - (rowLen*(begin/rowLen));
-			if(end >= rowLen)
-				end = end - (rowLen*(end/rowLen));
-			int tmp = row[begin];
-			row[begin] = row[end];
-			row[end] = tmp;
-		}
-		pos += length[i] + skip++;
-		if(pos >= rowLen)
-			pos = abs(rowLen - pos);
-	}
-
-	printf("10a: %d\n\n", row[0]*row[1]);
-}
-
-
-void solveB() {
-	char in[] = {"31,2,85,1,80,109,35,63,98,255,0,13,105,254,128,33"};
-	int *length;
-	int skip = 0, pos = 0;
-	
-	int lenLen = strlen(in)+5;
-	length = (int*)malloc(lenLen * sizeof(int));
-		for(int i = 0; i < strlen(in); i++)
-			length[i] = in[i];
-	length[strlen(in)] = 17; //17, 31, 73, 47, 23
-	length[strlen(in)+1] = 31;
-	length[strlen(in)+2] = 73;
-	length[strlen(in)+3] = 47;
-	length[strlen(in)+4] = 23;
-	
-
-	for(int x = 0; x < 64; x++) {
-		for(int i = 0; i < lenLen; i++) {
-
-			for( int j = length[i], k = 0; j > 1; j-=2, k++) {
-				int begin = pos+k;
-				int end = pos+length[i]-k-1;
-				if(begin >= rowLen) 
-					begin = begin - (rowLen*(begin/rowLen));
-				if(end >= rowLen)
-					end = end - (rowLen*(end/rowLen));
-				int tmp = row[begin];
-				row[begin] = row[end];
-				row[end] = tmp;
-			}
-			pos += length[i] + skip++;
-			if(pos >= rowLen)
-				pos = abs(rowLen - pos);
-		}
-	}
-	int res;
-	printf("10b: ");
-	for(int i = 0; i < 16; i++) {
-		res = row[0+i*16] ^ row[1+i*16] ^ row[2+i*16] ^ row[3+i*16] ^ row[4+i*16] ^ row[5+i*16] ^ row[6+i*16] ^ row[7+i*16] ^ row[8+i*16] ^ row[9+i*16] ^ row[10+i*16] ^ row[11+i*16] ^ row[12+i*16] ^ row[13+i*16] ^ row[14+i*16] ^ row[15+i*16];
-		printf("%02x",res);
-	}
-	printf("\n\n");
-
-}
-
-int main() {
-	rowLen = sizeof(row)/sizeof(int);	
-	for(int i = 0; i < rowLen; i++)
-		row[i] = i;
-	solveA();
-	for(int i = 0; i < rowLen; i++)
-		row[i] = i;
-	solveB();
-	
-	return 1;
-}
-
 /*
 --- Day 10: Knot Hash ---
 You come across some programs that are trying to implement a software emulation of a hash based on knot-tying. The hash these programs are implementing isn't very strong, but you decide to help them anyway. You make a mental note to remind the Elves later not to invent their own cryptographic functions.
@@ -155,3 +65,123 @@ Treating your puzzle input as a string of ASCII characters, what is the Knot Has
 
 Your puzzle answer was 28e7c4360520718a5dc811d3942cf1fd.
 */
+
+#include "advent.h"
+
+static int row[256];
+static char *in;
+
+static int getInput(char *f) {
+
+	char * line = NULL;
+    size_t l = 0;
+
+	FILE *file=fopen(f, "r");
+	if(file == NULL) {
+		printf("ERR: CAN NOT OPEN '%s'\n\n", f);
+		return 0;
+	}
+	
+	while (getline(&line, &l, file) != -1) {
+        in = (char*)malloc((strlen(line) + 1) * sizeof(char));
+        strcpy(in,line);  
+    }
+   
+	fclose(file);
+    free(line);
+	return 1;
+
+}
+
+void get10a(char *f){
+
+	if(!getInput(f))
+		return;
+
+	int row[256], skip = 0, pos = 0, len = 0, *length = NULL;
+
+	for(int i = 0; i < 256; i++)
+		row[i] = i;
+
+	char *ptr = strtok(in, ",");
+	while(ptr) {
+		length = (int*)realloc(length, ++len * sizeof(int));
+		length[len-1] = toI(ptr);
+		ptr = strtok(NULL, ",");
+	}
+	
+	for(int i = 0; i < len; i++) {
+
+		for( int j = length[i], k = 0; j > 1; j-=2, k++) {
+			int begin = pos+k;
+			int end = pos+length[i]-k-1;
+			if(begin >= 256) 
+				begin = begin - (256*(begin/256));
+			if(end >= 256)
+				end = end - (256*(end/256));
+			int tmp = row[begin];
+			row[begin] = row[end];
+			row[end] = tmp;
+		}
+		pos += length[i] + skip++;
+		if(pos >= 256)
+			pos = abs(256 - pos);
+	}
+
+	free(in);
+	free(length);
+	in = NULL;
+
+	printf("10a: %d\n", row[0]*row[1]);
+}
+
+void get10b(char *f){
+
+	if(!getInput(f))
+		return;
+
+	for(int i = 0; i < 256; i++)
+		row[i] = i;
+	
+	int *length, skip = 0, pos = 0, len = strlen(in)+5;
+	length = (int*)malloc(len  * sizeof(int));
+		for(int i = 0; i < strlen(in); i++)
+			length[i] = in[i];
+	length[strlen(in)] = 17; //17, 31, 73, 47, 23
+	length[strlen(in)+1] = 31;
+	length[strlen(in)+2] = 73;
+	length[strlen(in)+3] = 47;
+	length[strlen(in)+4] = 23;
+	
+
+	for(int x = 0; x < 64; x++) {
+		for(int i = 0; i < len; i++) {
+
+			for( int j = length[i], k = 0; j > 1; j-=2, k++) {
+				int begin = pos+k;
+				int end = pos+length[i]-k-1;
+				if(begin >= 256) 
+					begin = begin - (256*(begin/256));
+				if(end >= 256)
+					end = end - (256*(end/256));
+				int tmp = row[begin];
+				row[begin] = row[end];
+				row[end] = tmp;
+			}
+			pos += length[i] + skip++;
+			if(pos >= 256)
+				pos = abs(256 - pos);
+		}
+	}
+
+	free(in);
+	free(length);
+	in = NULL;
+	int res;
+	printf("10b: ");
+	for(int i = 0; i < 16; i++) {
+		res = row[0+i*16] ^ row[1+i*16] ^ row[2+i*16] ^ row[3+i*16] ^ row[4+i*16] ^ row[5+i*16] ^ row[6+i*16] ^ row[7+i*16] ^ row[8+i*16] ^ row[9+i*16] ^ row[10+i*16] ^ row[11+i*16] ^ row[12+i*16] ^ row[13+i*16] ^ row[14+i*16] ^ row[15+i*16];
+		printf("%02x",res);
+	}
+	printf("\n\n");
+}
