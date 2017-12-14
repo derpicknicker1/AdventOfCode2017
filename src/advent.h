@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+
 // Helper
 int toI(char *s);
 
@@ -41,6 +43,10 @@ void get9b(char *f);
 //Day 10
 void get10a(char *f);
 void get10b(char *f);
+
+//Day 10
+void get11a(char *f);
+void get11b(char *f);
 
 //Day 12
 void get12a(char *f);
