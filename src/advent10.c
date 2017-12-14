@@ -68,7 +68,6 @@ Your puzzle answer was 28e7c4360520718a5dc811d3942cf1fd.
 
 #include "advent.h"
 
-static int row[256];
 static char *in;
 
 static int getInput(char *f) {
@@ -140,10 +139,11 @@ void get10b(char *f){
 	if(!getInput(f))
 		return;
 
+	int *length, skip = 0, pos = 0, len = strlen(in)+5, row[256];
+
 	for(int i = 0; i < 256; i++)
 		row[i] = i;
 	
-	int *length, skip = 0, pos = 0, len = strlen(in)+5;
 	length = (int*)malloc(len  * sizeof(int));
 		for(int i = 0; i < strlen(in); i++)
 			length[i] = in[i];

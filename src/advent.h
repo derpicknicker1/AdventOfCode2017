@@ -49,3 +49,7 @@ void get12b(char *f);
 //Day 13
 void get13a(char *f);
 void get13b(char *f);
+
+//Day 14
+void get14a(char *f);
+void get14b(char *f);

@@ -1,4 +1,6 @@
-SOURCE := advent1.c advent2.c advent3.c advent4.c advent5.c advent6.c advent8.c advent9.c advent10.c advent12.c advent13.c helper.c
+DAYS := 1 2 3 4 5 6 8 9 10 12 13 14
+FNAMES := $(addprefix advent,$(DAYS))
+SOURCE := $(addsuffix .c,$(FNAMES)) helper.c
 CFILES := main.c $(addprefix src/,$(SOURCE))
 INCLUDES := -I "src/"
 
