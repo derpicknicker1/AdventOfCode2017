@@ -1,7 +1,10 @@
 #include "advent.h"
 
-#define execute(s) 	get##s##a("input/" #s ".txt"); \
-					get##s##b("input/" #s ".txt"); 
+#define execute(s) 	printf("Solving %d...\n", s); \
+					fflush(stdout); \
+					get##s##a("input/" #s ".txt"); \
+					get##s##b("input/" #s ".txt");
+					
 
 int main() {
 	
@@ -21,6 +24,9 @@ int main() {
 	execute(12)
 	execute(13)
 	execute(14)
+	execute(15)
+
+	system("Pause");
 	
 	return 1;
 }
