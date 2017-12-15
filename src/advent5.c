@@ -41,11 +41,11 @@ Your puzzle answer was 27720699.
 static int len;
 static int *M;
 
+
 static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
-	free(M);
 	M = NULL;
 	len = 0;
 
@@ -66,29 +66,34 @@ static int getInput(char *f) {
 	return 1;
 }
 
-void get5a(char *f) {
+
+static int solve(int choose, char *f) {
 
 	if(!getInput(f))
-		return;
+		return 0;
 
 	int cnt = 0, pos = 0;
+
 	while(pos < len) {
-		pos += M[pos]++;
+		if(choose)
+			pos += M[pos] > 2 ? M[pos]-- : M[pos]++;
+		else
+			pos += M[pos]++;
 		cnt++;
 	}
-	printf("5a: %d\n", cnt);
+
+	free(M);
+
+	return cnt;
 
 }
 
+
+void get5a(char *f) {
+	printf("5a: %d\n", solve(0, f));
+}
+
+
 void get5b(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	int cnt = 0, pos = 0;
-	while(pos < len) {
-		pos += M[pos] > 2 ? M[pos]-- : M[pos]++;
-		cnt++;
-	}
-	printf("5b: %d\n\n", cnt);
+	printf("5b: %d\n\n", solve(1, f));
 }

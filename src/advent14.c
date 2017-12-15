@@ -58,6 +58,8 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
+    input = NULL;
+
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
 		printf("ERR: CAN NOT OPEN '%s'\n\n", f);
@@ -143,7 +145,6 @@ void get14a(char *f) {
 	}
 
 	free(input);
-	input = NULL;
 
 	printf("14a: %d\n", cnt);
 
@@ -174,7 +175,6 @@ void get14b(char *f) {
 				markPos((int*)map, j, i, ++cnt);
 
 	free(input);
-	input = NULL;
 
 	printf("14b: %d\n\n", cnt);
 

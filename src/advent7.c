@@ -92,6 +92,7 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
+    nodes = NULL;
     cntN = 0;
 
 	FILE *file=fopen(f, "r");
@@ -200,43 +201,35 @@ static int DFS(int root) {
 }
 
 
-static void clearNodes() {
+static int solve(int choose, char *f) {
+
+	if(!getInput(f))
+		return 0;
+
+	char res[32];
+	int index;
+
+	findRoot(res, &index);
+
+	if(choose)
+		DFS(index);
+	else
+		printf("7a: %s\n", res);
 
 	for(int i = 0; i < cntN; i++) {
 		free(nodes[i].name);
 		free(nodes[i].children);
 	}
 	free(nodes);
-	nodes = NULL;
 }
+
 
 void get7a(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	char res[32];
-	int index;
-
-	findRoot(res, &index);
-
-	//clearNodes();
-
-	printf("7a: %s\n", res);
+	solve(0, f);
 }
 
+
 void get7b(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	char res[32];
-	int index;
-
-	findRoot(res, &index);
-
-	DFS(index);
-
-	clearNodes();
+	solve(1, f);
 }
 

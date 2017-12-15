@@ -40,6 +40,8 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
+	input = NULL;
+
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
 		printf("ERR: CAN NOT OPEN '%s'\n\n", f);
@@ -56,7 +58,11 @@ static int getInput(char *f) {
 	return 1;
 }
 
-static int calcDist(int choose) {
+
+static int calcDist(int choose, char *f) {
+
+	if(!getInput(f))
+		return 0;
 
 	int x = 0, y = 0, z = 0, res, res2 = 0;
 	char *ptr = strtok(input, ",");
@@ -79,25 +85,17 @@ static int calcDist(int choose) {
 	res = MAX( MAX(abs(x), abs(y)), abs(z) );
 
 	free(input);
-	input = NULL;
-
+	
 	return choose ? res2 : res;
 
 }
 
+
 void get11a(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	printf("11a: %d\n", calcDist(0));
+	printf("11a: %d\n", calcDist(0, f));
 }
 
 
 void get11b(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	printf("11b: %d\n\n", calcDist(1));
+	printf("11b: %d\n\n", calcDist(1, f));
 }

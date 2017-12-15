@@ -42,8 +42,8 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
-	//free(bank);
-	//bank = NULL; 
+	
+	bank = NULL; 
 	len = 0;
 
 	FILE *file=fopen(f, "r");
@@ -81,9 +81,14 @@ static int chkBank() {
 	return 0;
 }
 
-static int doWork(int choose) {
+static int doWork(int choose, char *f) {
+
+	if(!getInput(f))
+		return 0;
+
 	int cnt = 0, chk = 0;
 	cntRes = 0;
+	
 	while(++cnt) {
 		
 		int maxPos = 0, max = 0;
@@ -113,23 +118,18 @@ static int doWork(int choose) {
 	for(int i = 0; i < cntRes; i++)
 		free(res[i]);
 	free(res);
+	free(bank);
 	res = NULL;
 
 	return choose ? cnt-chk : cnt;
 }
 
+
 void get6a(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	printf("6a: %d\n", doWork(0));
+	printf("6a: %d\n", doWork(0, f));
 }
 
+
 void get6b(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	printf("6b: %d\n\n", doWork(1));
+	printf("6b: %d\n\n", doWork(1, f));
 }

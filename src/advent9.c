@@ -68,6 +68,8 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
+    in = NULL;
+
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
 		printf("ERR: CAN NOT OPEN '%s'\n\n", f);
@@ -85,12 +87,13 @@ static int getInput(char *f) {
 
 }
 
-void get9a(char *f) {
+
+static int solve(int choose, char *f) {
 
 	if(!getInput(f))
-		return;
+		return 0;
 
-	int level = 0, garbage = 0, sum = 0;
+	int level = 0, garbage = 0, sum = 0, sumG = 0;
 
 	for(int i = 0; i < strlen(in); i++) {
 		if(in[i] == '{' && !garbage)
@@ -103,34 +106,20 @@ void get9a(char *f) {
 			garbage = 0;
 		else if(in[i] == '!')
 			i++;
+		else if(garbage)
+			sumG++;
 	}
 
 	free(in);
-	in = NULL;
 
-	printf("9a: %d\n", sum);
+	return choose ? sumG : sum;
+}
+
+
+void get9a(char *f) {
+	printf("9a: %d\n", solve(0, f));
 }
 
 void get9b(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	int level = 0, garbage = 0, sum = 0;
-
-	for(int i = 0; i < strlen(in); i++) {
-		if (in[i] == '<' && !garbage)
-			garbage = 1;
-		else if (in[i] == '>' && garbage)
-			garbage = 0;
-		else if(in[i] == '!')
-			i++;
-		else if(garbage)
-			sum++;
-	}
-
-	free(in);
-	in = NULL;
-
-	printf("9b: %d\n\n", sum);
+	printf("9b: %d\n\n", solve(1, f));
 }

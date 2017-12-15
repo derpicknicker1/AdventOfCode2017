@@ -70,10 +70,13 @@ Your puzzle answer was 28e7c4360520718a5dc811d3942cf1fd.
 
 static char *in;
 
+
 static int getInput(char *f) {
 
 	char * line = NULL;
     size_t l = 0;
+
+    in = NULL;
 
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
@@ -91,6 +94,7 @@ static int getInput(char *f) {
 	return 1;
 
 }
+
 
 void get10a(char *f){
 
@@ -129,10 +133,10 @@ void get10a(char *f){
 
 	free(in);
 	free(length);
-	in = NULL;
-
+	
 	printf("10a: %d\n", row[0]*row[1]);
 }
+
 
 void get10b(char *f){
 
@@ -176,7 +180,7 @@ void get10b(char *f){
 
 	free(in);
 	free(length);
-	in = NULL;
+
 	int res;
 	printf("10b: ");
 	for(int i = 0; i < 16; i++) {

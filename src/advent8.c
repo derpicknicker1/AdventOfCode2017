@@ -44,6 +44,8 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
+    regs = NULL;
+    in = NULL;
 	lines = 0;
 	cntReg = 0;
 
@@ -138,11 +140,9 @@ void get8a(char *f) {
 			max = regs[i].val;
 
 	free(regs);
-	regs = NULL;
 	for(int i = 0; i < lines; i++) 
     	free(in[i]);
     free(in);
-    in = NULL;
 
 	printf("8a: %d\n", max);
 
@@ -156,11 +156,10 @@ void get8b(char *f) {
 	parseInstructions();
 
 	free(regs);
-	regs = NULL;
 	for(int i = 0; i < lines; i++) 
     	free(in[i]);
     free(in);
-    in = NULL;
+    
 
 	printf("8b: %d\n\n", max2);
 	

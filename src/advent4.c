@@ -37,8 +37,6 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t len = 0;
 
-    for(int i = 0; i < lines; i++)
-    	free(M[i]);
 	M = NULL; 
 	lines = 0;
 
@@ -62,13 +60,6 @@ static int getInput(char *f) {
 	return 1;
 }
 
-static int cntWords(char *s) {
-	int c = 0;
-	for (int j = 0; j < strlen(s); j++)
-        if (s[j] == ' ')
-            c++;
-    return c;
-}
 
 static int findDouble(char **w, char *s, int c) {
 	for (int j = 0; j < c; j++)
@@ -76,6 +67,7 @@ static int findDouble(char **w, char *s, int c) {
 			return 1;
 	return 0;
 }
+
 
 static int findAna(char **w, char *s, int c) {
 	int tmp = c;
@@ -101,17 +93,23 @@ static int findAna(char **w, char *s, int c) {
 		return 0;
 }
 
-void get4a(char *f) {
+
+static int solve(int choose, char *f) {
 
 	if(!getInput(f))
-		return;
+		return 0;
 
 	int cnt = lines;
 
 	for(int i = 0; i < lines; i++) {
-	
-		char **words = (char**)malloc( (cntWords(M[i]) + 1) * sizeof(char*) );
-		int c = 0, dFound = 0;
+		
+		int wordCnt = 0;
+		for (int j = 0; j < strlen(M[i]); j++)
+	        if (M[i][j] == ' ')
+	            wordCnt++;
+
+		char **words = (char**)malloc( (wordCnt + 1) * sizeof(char*) );
+		int c = 0, dFound = 0, aFound = 0;
 		char *ptr = strtok(M[i], " ");
 		
 		while(ptr != NULL) {
@@ -120,8 +118,11 @@ void get4a(char *f) {
 			
 
 			strcpy(words[c++], ptr);
-			if(findDouble(words, ptr, c-1) && !dFound++)
+			if( !choose && findDouble(words, ptr, c-1) && !dFound++ )
 				cnt--;
+			else if( choose && findAna(words, ptr, c-1) && !aFound++ )
+				cnt--;
+
 			ptr = strtok(NULL, " ");
 		}
 		
@@ -130,35 +131,22 @@ void get4a(char *f) {
 		free(words);
 	}
 
-	printf("4a: %d\n", cnt);
+	for(int i = 0; i < lines; i++)
+    	free(M[i]);
+    free(M);
+
+    return cnt;
 }
 
+
+
+void get4a(char *f) {
+	printf("4a: %d\n", solve(0, f));
+}
+
+
 void get4b(char *f) {
-
-	if(!getInput(f))
-		return;
-
-	int cnt = lines;
-
-	for(int i = 0; i < 512; i++) {
-	
-		char **words = (char**)malloc( (cntWords(M[i]) + 1) * sizeof(char*) );
-		int c = 0,  aFound = 0;
-		char *ptr = strtok(M[i], " ");
-		
-		while(ptr != NULL) {
-			words[c] = (char*)malloc( (strlen(ptr) + 1) * sizeof(char) );
-			strcpy(words[c++], ptr);
-			if(findAna(words, ptr, c-1) && !aFound++)
-				cnt--;
-			ptr = strtok(NULL, " ");
-		}
-		
-		for(int j = 0; j < c; j++)
-			free(words[j]);
-		free(words);
-	}
-	printf("4b: %d\n\n", cnt);
+	printf("4b: %d\n\n", solve(1, f));
 }
 
 

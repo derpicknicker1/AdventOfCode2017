@@ -61,9 +61,6 @@ static int getInput(char *f) {
 	char *line = NULL, *li, ch;
 	size_t t = 0;
 
-	for(int i = 0; i < cntN; i++)
-		free(nodes[i].childs);
-	free(nodes);
 	nodes = NULL;
 	cntN = 0;
 
@@ -120,31 +117,36 @@ static int DFS(int x, int *visit) {
 }
 
 
-void get12a(char *f) {
+static int solve(int choose, char *f) {
 
 	if(!getInput(f))
-		return;
-
-	int visit[cntN];
-	for(int i = 0; i < cntN; i++)
-		visit[i] = 0;
-
-	printf("12a: %d\n", DFS(0, visit));
-
-}
-
-void get12b(char *f) {
-
-	if(!getInput(f))
-		return;
+		return 0;
 
 	int visit[cntN], groups = 0;
+
 	for(int i = 0; i < cntN; i++)
 		visit[i] = 0;
 
-	for(int i = 0; i < cntN; i++)
+	if(choose)
+		for(int i = 0; i < cntN; i++)
 			if(DFS(i, visit))
 				groups++;
 
-	printf("12b: %d\n\n", groups);
+	
+	groups = choose ? groups : DFS(0, visit);
+
+	for(int i = 0; i < cntN; i++)
+		free(nodes[i].childs);
+	free(nodes);
+
+	return groups;
+}
+
+
+void get12a(char *f) {
+	printf("12a: %d\n", solve(0, f));
+}
+
+void get12b(char *f) {
+	printf("12b: %d\n\n", solve(1, f));
 }

@@ -27,6 +27,6 @@ int main() {
 	execute(15)
 
 	system("Pause");
-	
+
 	return 1;
 }

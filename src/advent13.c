@@ -287,7 +287,6 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
-	free(nodeList);
 	nodeList = NULL; 
 	cntNodes = 0;
 
@@ -322,8 +321,10 @@ void get13a(char *f) {
 	int severity = 0;
 
 	for(int i = 0; i < cntNodes; i++) 
-		if(nodeList[i] != -1 && (i ) % nodeList[i] == 0)
+		if(nodeList[i] != -1 && i % nodeList[i] == 0)
 			severity += ((nodeList[i] / 2) + 1) * i;
+
+    free(nodeList);
 
 	printf("13a: %d\n", severity);
 }
@@ -333,7 +334,7 @@ void get13b(char *f) {
 	if(!getInput(f))
 		return;
 	int  wait = -1, caught_yet = 1, i;
-;
+
     while(caught_yet) {
 
         i = caught_yet = 0;
@@ -345,6 +346,7 @@ void get13b(char *f) {
         } while(i++ < cntNodes && !caught_yet);
     }
    
+    free(nodeList);
 
 	printf("13b: %d\n\n", wait);
 }

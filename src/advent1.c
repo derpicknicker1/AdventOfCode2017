@@ -44,11 +44,8 @@ Your puzzle answer was 1284.
 static char *input = NULL;
 
 static int getInput(char *f) {
-	int cnt = 0;
-	char c;
-
-	free(input);
-	input = NULL;
+	char * line = NULL;
+    size_t l = 0;
 
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
@@ -56,10 +53,12 @@ static int getInput(char *f) {
 		return 0;
 	}
 	
-	while( (c = fgetc(file)) != EOF ) {
-		input = (char*)realloc(input, ++cnt * sizeof(char));
-		input[cnt-1] = c;
+	while( getline(&line, &l, file) != -1 ) {
+		input = (char*)realloc(input, strlen(line) + 1);
+		strcpy(input,line);
 	}
+
+	free(line);
 	fclose(file);
 	return 1;
 }
@@ -72,29 +71,40 @@ void get1a(char * f) {
 	int sum = 0;
 
 	for(int i = 1; i < strlen(input); i++) {
+
 		if(input[i] == input[i-1])
 			sum += input[i] - '0';
+
 		if( (i == strlen(input)-1 && input[0] == input[i]) )
 			sum += input[i] - '0';
 	}
+
 	free(input);
+	input = NULL;
+
 	printf("1a: %d\n", sum);
 }
 
 void get1b(char *f) {
 
-	if(input == NULL && !getInput(f))
+	if(!getInput(f))
 		return;
 
 	int sum = 0, dist = strlen(input) / 2;
 
 	for(int i = 0; i < strlen(input); i++) {
+
 		int j = i + dist;
+
 		if(j >= strlen(input))
 			j = dist - (strlen(input) - i);
+
 		if(input[i] == input[j])
 			sum += input[i] - '0';
 	}
-		
+
+	free(input);
+	input = NULL;	
+	
 	printf("1b: %d\n\n", sum);
 }

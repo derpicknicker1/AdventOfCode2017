@@ -50,10 +50,6 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t len = 0;
 
-    for(int i = 0; i < H; i++)
-    	free(input[i]);
-	free(input);
-
 	input = NULL; 
 	H = W = 0;
 
@@ -67,8 +63,10 @@ static int getInput(char *f) {
 
         input = (int**)realloc(input, ++H * sizeof(int*));
         input[H-1] = NULL;
+
         int cnt = 0;
         char *ptr = strtok(line, "\t");
+        
         while(ptr) {
         	input[H-1] = (int*)realloc(input[H-1], ++cnt * sizeof(int));
         	input[H-1][cnt-1] =  toI(ptr);
@@ -78,42 +76,58 @@ static int getInput(char *f) {
         if(cnt > W)
         	W = cnt;
     }
+
     for(int i = 0; i < H; i++)
     	input[i] = (int*)realloc(input[i], W * sizeof(int));
+
 	fclose(file);
-    if (line)
-        free(line);
+    free(line);
 	return 1;
 }
 
 void get2a(char *f) {
-	int sum = 0;
+
 	if(!getInput(f))
 		return;
 
+	int sum = 0;
+
 	for(int y = 0;y<H;y++) {
+
 		int min = 100000000, max = 0;
+
 		for(int x = 0;x<W;x++) {
+
 			if(input[y][x] > max)
 				max = input[y][x];
+
 			if(input[y][x] < min)
 				min = input[y][x];
 		}
+
 		sum += max-min;	
 	}
 	
+	for(int i = 0; i < H; i++)
+    	free(input[i]);
+	free(input);
+
 	printf("2a: %d\n",sum);
 }
 
 void get2b(char *f) {
-	int sum = 0;
 	
 	if(!getInput(f))
 		return;
 
+	int sum = 0;
+
 	for(int y = 0;y<H;y++)
+
 		for(int x = 0;x<W-1;x++)
+
 			for(int i = x+1; i < W; i++) {
+
 				if(input[y][x] % input[y][i] == 0) {
 					sum += input[y][x] / input[y][i];
 					break;
@@ -124,6 +138,10 @@ void get2b(char *f) {
 					break;
 				}
 			}
+
+	for(int i = 0; i < H; i++)
+    	free(input[i]);
+	free(input);
 
 	printf("2b: %d\n\n",sum);
 }

@@ -45,7 +45,7 @@ Your puzzle answer was 266330.
 */
 #include "advent.h"
 
-static int n = 265149, dim, **M; 
+static int n, dim, **M; 
 
 static int getInput(char *f) {
 	char * line = NULL;
@@ -60,6 +60,7 @@ static int getInput(char *f) {
 	while (getline(&line, &len, file) != -1)
 		if(sscanf(line,"%d",&n) != 1) {
 			free(line);
+			printf("ERR: CAN NOT PARSE INPUT FROM FILE '%s'\n\n", f);
 			return 0;
 		}
 
@@ -133,53 +134,50 @@ void get3b(char *f) {
 		return;
 
 	dim = ceil( sqrt(n) );
-
 	int c = dim/2;
-	int levl, x = c, y = c, cnt = 1, res;
+	int levl, x = c, y = c, res = 0;
 
-	M = (int**)realloc(M, dim * sizeof(int*));
+	M = (int**)malloc(dim * sizeof(int*));
     for(int i = 0; i < dim; i++)
-    	M[i] = (int*)realloc(M[i], dim * sizeof(int));
-
-    M[dim/2][dim/2] = 1;
+    	M[i] = (int*)calloc(dim, sizeof(int));
+    
+    M[c][c] = 1;
 	
     for(levl=1; c+levl<=dim && res < n; levl++)
     {
-        for(; x<=c+levl && x < dim; x++) { // go right
+
+        for(; x <= c+levl && x < dim; x++) { // go right
         	M[y][x] = add(x,y);
-	        if ( M[y][x] > n) { // we are done
-	            res = M[y][x];
-	            break;
-	        } 
+	        if ( res = M[y][x] > n ? M[y][x] : 0 ) // we are done
+	            break; 
     	}
       
-		for(y--,x--; y>=c-levl && res < n;y--) {    // go up
+		for(y--, x--; y >= c-levl && res < n; y--) {    // go up
 			M[y][x] = add(x,y);
-			if ( M[y][x] > n) { // we are done
-	            res = M[y][x];
+			if ( res = M[y][x] > n ? M[y][x] : 0 ) // we are done
 	            break;
-	        }           
         }
         
-        for(x--,y++; x>=c-levl && res < n; x--) {   // go left
+        for(x--, y++; x >= c-levl && res < n; x--) {   // go left
         	M[y][x] = add(x,y);
-        	if ( M[y][x] > n) { // we are done
-	            res = M[y][x];
+        	if ( res = M[y][x] > n ? M[y][x] : 0 ) // we are done
 	            break;
-	        }  
         }
         
-        for(x++,y++; y<=c+levl && y < dim && res < n; y++) { // go down
+        for(x++, y++; y <= c+levl && y < dim && res < n; y++) { // go down
         	M[y][x] = add(x,y);
-        	if ( M[y][x] > n) { // we are done
-	            res = M[y][x];
+        	if ( res = M[y][x] > n ? M[y][x] : 0 ) // we are done
 	            break;
-	        }  
         }
+
         x++;
         y--;
     }
     
+    for(int i = 0; i < dim; i++)
+    	free(M[i]);
+    free(M);
+
     printf("3b: %d\n\n", res);
 	
 }
