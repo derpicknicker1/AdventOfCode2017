@@ -278,8 +278,8 @@ Your puzzle answer was 3896406.
 */
 #include "advent.h"
 
-static int *nodes;
-static int cntN;
+static int *nodeList;
+static int cntNodes;
 
 
 static int getInput(char *f) {
@@ -287,9 +287,9 @@ static int getInput(char *f) {
 	char * line = NULL;
     size_t l = 0;
 
-	free(nodes);
-	nodes = NULL; 
-	cntN = 0;
+	free(nodeList);
+	nodeList = NULL; 
+	cntNodes = 0;
 
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
@@ -300,11 +300,11 @@ static int getInput(char *f) {
 	while (getline(&line, &l, file) != -1) {
 		int depth, range;
 		sscanf(line,"%d: %d", &depth, &range);
-		nodes = (int*)realloc(nodes, (depth + 1) * sizeof(int));
-		nodes[depth] = (range - 1) * 2;
-		for(int i = cntN; i < depth; i++)
-			nodes[i] = -1;
-		cntN = depth + 1;
+		nodeList = (int*)realloc(nodeList, (depth + 1) * sizeof(int));
+		nodeList[depth] = (range - 1) * 2;
+		for(int i = cntNodes; i < depth; i++)
+			nodeList[i] = -1;
+		cntNodes = depth + 1;
     }
    
 	fclose(file);
@@ -321,9 +321,9 @@ void get13a(char *f) {
 
 	int severity = 0;
 
-	for(int i = 0; i < cntN; i++) 
-		if(nodes[i] != -1 && (i ) % nodes[i] == 0)
-			severity += ((nodes[i] / 2) + 1) * i;
+	for(int i = 0; i < cntNodes; i++) 
+		if(nodeList[i] != -1 && (i ) % nodeList[i] == 0)
+			severity += ((nodeList[i] / 2) + 1) * i;
 
 	printf("13a: %d\n", severity);
 }
@@ -340,9 +340,9 @@ void get13b(char *f) {
         wait++;
 
         do {
-        	if (nodes[i] != -1 && (i + wait) % nodes[i] == 0)
+        	if (nodeList[i] != -1 && (i + wait) % nodeList[i] == 0)
                 caught_yet = 1;
-        } while(i++ < cntN && !caught_yet);
+        } while(i++ < cntNodes && !caught_yet);
     }
    
 

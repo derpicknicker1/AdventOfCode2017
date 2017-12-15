@@ -32,6 +32,10 @@ void get5b(char *f);
 void get6a(char *f);
 void get6b(char *f);
 
+//Day 7
+void get7a(char *f);
+void get7b(char *f);
+
 //Day 8
 void get8a(char *f);
 void get8b(char *f);

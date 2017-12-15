@@ -13,7 +13,7 @@ int main() {
 	execute(4)
 	execute(5)
 	execute(6)
-	//execute(7)
+	execute(7)
 	execute(8)
 	execute(9)
 	execute(10)
