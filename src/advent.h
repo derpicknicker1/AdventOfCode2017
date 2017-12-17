@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
@@ -64,6 +65,10 @@ void get13b(char *f);
 void get14a(char *f);
 void get14b(char *f);
 
-//Day 14
+//Day 15
 void get15a(char *f);
 void get15b(char *f);
+
+//Day 16
+void get16a(char *f);
+void get16b(char *f);

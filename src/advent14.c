@@ -76,7 +76,7 @@ static int getInput(char *f) {
 	return 1;
 }
 
-void getHash(char *in, int* out) {
+static void getHash(char *in, int* out) {
 
 	int row[256], *length, skip = 0, pos = 0, len = strlen(in);
 
@@ -161,12 +161,9 @@ void get14b(char *f) {
 	for(int i = 0; i < 128; i++) {
 		sprintf(key,"%s-%d%c%cI/%c", input, i, 17,31,23);
 		getHash(key, hash);
-		for(int j = 0; j < 16; j++) {
-			for(int k = 7; k >= 0; k--) {
-				 map[i][j*8+k] = hash[j] & 1 ? 0 : -1;
-				 hash[j] >>= 1 ;
-			}
-		}
+		for(int j = 0; j < 16; j++)
+			for(int k = 7; k >= 0; k--) 
+				 map[i][j*8+k] = hash[j] >> (7-k) & 1 ? 0 : -1;
 	}
 
 	for(int i = 0; i < 128; i++)
