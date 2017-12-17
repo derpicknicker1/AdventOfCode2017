@@ -37,6 +37,7 @@ int main() {
 	execute(14)
 	execute(15)
 	execute(16)
+	execute(17)
 
 	double timeSpent = (double)(clock() - beginAll) / CLOCKS_PER_SEC;
 	printf("Overall Runtime: %.3f\n\n", timeSpent);
