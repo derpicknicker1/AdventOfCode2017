@@ -117,13 +117,13 @@ void get17b(char *f) {
 	if(!getInput(f))
 		return;
 
-	int pos = 0, out;
+	int pos = 0, out = 0;
 	for(int i = 1; i <= 50000000; i++) {
 	    pos = (pos + input) % i + 1;
 	    if (pos==1)
 	        out = i;
 	}
-	printf("17b: %d\n",out);
+	printf("17b: %d\n\n",out);
 	//20430489
 
 }

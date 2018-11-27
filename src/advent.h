@@ -76,3 +76,23 @@ void get16b(char *f);
 //Day 17
 void get17a(char *f);
 void get17b(char *f);
+
+//Day 18
+void get18a(char *f);
+void get18b(char *f);
+
+//Day 19
+void get19a(char *f);
+void get19b(char *f);
+
+//Day 20
+void get20a(char *f);
+void get20b(char *f);
+
+//Day 22
+void get22a(char *f);
+void get22b(char *f);
+
+//Day 23
+void get23a(char *f);
+void get23b(char *f);
